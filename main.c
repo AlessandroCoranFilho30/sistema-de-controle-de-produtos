@@ -3,17 +3,18 @@
 #include <ctype.h>
 
 char produto[10][20];
+char cliente[10][20];
 float valor[10];
 int quantidade[10];
-char cliente[10][20];
 int i = 0;
 
 void cadastro() {
     char resp;
     
     do {
+        system("cls");
         printf("\n***********************************");
-        printf("\n **** CADASTRO DE PRODUTOS *****");
+        printf("\n ***** CADASTRO DE PRODUTOS *****");
         printf("\n***********************************\n");
 
         if (i >= 10) {
@@ -26,7 +27,7 @@ void cadastro() {
         fgets(produto[i], 20, stdin);
         setbuf(stdin, NULL);
 
-        printf("Informe o valor: ");
+        printf("Informe o valor: R$ ");
         scanf("%f", &valor[i]);
         setbuf(stdin, NULL);
 
@@ -40,14 +41,75 @@ void cadastro() {
         resp = getchar();
         resp = toupper(resp);
         setbuf(stdin, NULL);
-
     } while (resp != 'N');
+}
+
+void consulta() {
+    char busca[20];
+    int encontrado = 0;
+
+    system("cls");
+    printf("\n***********************************");
+    printf("\n ***** CONSULTA DE PRODUTOS *****");
+    printf("\n***********************************\n");
+
+    if (i == 0) {
+        printf("\nNenhum produto cadastrado no sistema.\n");
+        system("pause");
+        return;
+    }
+
+    printf("\nDigite o nome do produto para buscar: ");
+    fgets(busca, 20, stdin);
+    setbuf(stdin, NULL);
+
+    system("pause");
+}
+
+void relatorio_produtos() {
+    system("cls");
+    printf("\n***************************************************");
+    printf("\n************* RELATORIOS DOS PRODUTOS *************");
+    printf("\n***************************************************\n");
+
+    if (i == 0) {
+        printf("\nNenhum produto cadastrado no sistema.\n");
+        system("pause");
+        return;
+    }
+
+    system("pause");
+}
+
+void venda() {
+    system("cls");
+    printf("\n***********************************");
+    printf("\n **** VENDA E BAIXA DE PRODUTOS ***");
+    printf("\n***********************************\n");
+
+    if (i == 0) {
+        printf("\nNenhum produto cadastrado para venda.\n");
+        system("pause");
+        return;
+    }
+
+    system("pause");
+}
+
+void relatorio_saida() {
+    system("cls");
+    printf("\n*****************************************************************");
+    printf("\n ******************** RELATORIO DE SAIDAS ***********************");
+    printf("\n*****************************************************************\n");
+    
+    system("pause");
 }
 
 int main() {
     int op;
 
     do {
+        system("cls");
         printf("\n**************************************");
         printf("\n ** SISTEMA DE CONTROLE DE PRODUTOS **");
         printf("\n ****** CURSO DE ADS - FATEC AM ******");
@@ -68,20 +130,16 @@ int main() {
                 cadastro();
                 break;
             case 2:
-                printf("\nFuncao a ser desenvolvida.\n");
-                system("pause");
+                consulta();
                 break;
             case 3:
-                printf("\nFuncao a ser desenvolvida.\n");
-                system("pause");
+                relatorio_produtos();
                 break;
             case 4:
-                printf("\nFuncao a ser desenvolvida.\n");
-                system("pause");
+                venda();
                 break;
             case 5:
-                printf("\nFuncao a ser desenvolvida.\n");
-                system("pause");
+                relatorio_saida();
                 break;
             case 0:
                 printf("\nSaindo do sistema...\n");
@@ -94,7 +152,4 @@ int main() {
         }
         
     } while (op != 0);
-
-    return 0;
 }
-

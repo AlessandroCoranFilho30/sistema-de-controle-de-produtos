@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <ctype.h>
 
 char produto[10][20];
@@ -10,7 +11,7 @@ int i = 0;
 
 void cadastro() {
     char resp;
-    
+   
     do {
         system("cls");
         printf("\n***********************************");
@@ -38,7 +39,7 @@ void cadastro() {
         i++;
 
         printf("\nDeseja continuar o cadastro [S]im ou [N]ao? ");
-        resp = getchar();
+        scanf(" %c", &resp);
         resp = toupper(resp);
         setbuf(stdin, NULL);
     } while (resp != 'N');
@@ -62,6 +63,21 @@ void consulta() {
     printf("\nDigite o nome do produto para buscar: ");
     fgets(busca, 20, stdin);
     setbuf(stdin, NULL);
+
+    printf("\n--- RESULTADO DA BUSCA ---\n");
+
+    for (int j = 0; j < i; j++) {
+        if (strcmp(produto[j], busca) == 0) {
+            printf("\nProduto: %s", produto[j]);
+            printf("Valor: R$ %.2f\n", valor[j]);
+            printf("Quantidade: %d\n", quantidade[j]);
+            encontrado++;
+        }
+    }
+
+    if (encontrado == 0) {
+        printf("\nProduto nao encontrado!\n");
+    }
 
     system("pause");
 }
@@ -101,7 +117,7 @@ void relatorio_saida() {
     printf("\n*****************************************************************");
     printf("\n ******************** RELATORIO DE SAIDAS ***********************");
     printf("\n*****************************************************************\n");
-    
+   
     system("pause");
 }
 
@@ -150,6 +166,6 @@ int main() {
                 system("pause");
                 break;
         }
-        
+       
     } while (op != 0);
 }

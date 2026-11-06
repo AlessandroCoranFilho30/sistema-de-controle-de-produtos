@@ -8,11 +8,10 @@ char cliente[20][20];
 float valor[10];
 int quantidade[10];
 int i = 0;
-
-char venda_produto[20][20];
-int venda_qtd[20];
-float venda_total[20];
-int num_vendas = 0;
+char vendaProduto[20][20];
+int vendaQtd[20];
+float vendaTotal[20];
+int numVendas = 0;
 
 void limpar_buffer() {
     int c;
@@ -24,12 +23,10 @@ void cadastro() {
 
     do {
         system("cls");
-        printf("\n***********************************");
         printf("\n ***** CADASTRO DE PRODUTOS *****");
-        printf("\n***********************************\n");
 
         if (i >= 10) {
-            printf("\nLimite maximo de produtos atingido (10/10)!\n");
+            printf("\nLimite maximo de produtos atingido (10/10)\n");
             system("pause");
             break;
         }
@@ -37,7 +34,7 @@ void cadastro() {
         printf("\nInforme o produto: ");
         fgets(produto[i], 20, stdin);
         produto[i][strcspn(produto[i], "\n")] = '\0';
-
+        
         printf("Informe o valor: R$ ");
         scanf("%f", &valor[i]);
         limpar_buffer();
@@ -60,14 +57,11 @@ void consulta() {
     int encontrado = 0;
 
     system("cls");
-    printf("\n***********************************");
     printf("\n ***** CONSULTA DE PRODUTOS *****");
-    printf("\n***********************************\n");
 
     if (i == 0) {
         printf("\nNenhum produto cadastrado no sistema.\n");
         system("pause");
-        return;
     }
 
     printf("\nDigite o nome do produto para buscar: ");
@@ -92,13 +86,11 @@ void consulta() {
     system("pause");
 }
 
-void relatorio_produtos() {
-    float total_estoque = 0;
+void relatorioProdutos() {
+    float totalEstoque = 0;
 
     system("cls");
-    printf("\n***************************************************");
     printf("\n************* RELATORIOS DOS PRODUTOS *************");
-    printf("\n***************************************************\n");
 
     if (i == 0) {
         printf("\nNenhum produto cadastrado no sistema.\n");
@@ -111,11 +103,11 @@ void relatorio_produtos() {
 
     for (int j = 0; j < i; j++) {
         printf("%-15s %10.2f %8d %14.2f\n", produto[j], valor[j], quantidade[j], valor[j] * quantidade[j]);
-        total_estoque = total_estoque + (valor[j] * quantidade[j]);
+        totalEstoque = totalEstoque + (valor[j] * quantidade[j]);
     }
 
     printf("---------------------------------------------------\n");
-    printf("VALOR TOTAL EM ESTOQUE: R$ %.2f\n", total_estoque);
+    printf("VALOR TOTAL EM ESTOQUE: R$ %.2f\n", totalEstoque);
 
     system("pause");
 }
@@ -123,13 +115,11 @@ void relatorio_produtos() {
 void venda() {
     char busca[20];
     int pos = -1;
-    int qtd_vendida = 0;
+    int qtdVendida = 0;
     float total;
 
     system("cls");
-    printf("\n***********************************");
     printf("\n **** VENDA E BAIXA DE PRODUTOS ***");
-    printf("\n***********************************\n");
 
     if (i == 0) {
         printf("\nNenhum produto cadastrado para venda.\n");
@@ -137,7 +127,7 @@ void venda() {
         return;
     }
 
-    if (num_vendas >= 20) {
+    if (numVendas >= 20) {
         printf("\nLimite maximo de vendas atingido (20/20)!\n");
         system("pause");
         return;
@@ -165,38 +155,36 @@ void venda() {
     }
 
     printf("Quantidade a vender: ");
-    scanf("%d", &qtd_vendida);
-    limpar_buffer();
+    scanf("%d", &qtdVendida);
 
-    if (qtd_vendida <= 0) {
+    if (qtdVendida <= 0) {
         printf("\nQuantidade invalida!\n");
         system("pause");
         return;
     }
 
-    if (qtd_vendida > quantidade[pos]) {
+    if (qtdVendida > quantidade[pos]) {
         printf("\nEstoque insuficiente! Disponivel: %d un.\n", quantidade[pos]);
         system("pause");
         return;
     }
 
     printf("Nome do cliente: ");
-    fgets(cliente[num_vendas], 20, stdin);
-    cliente[num_vendas][strcspn(cliente[num_vendas], "\n")] = '\0';
+    fgets(cliente[numVendas], 20, stdin);
 
-    total = qtd_vendida * valor[pos];
+    total = qtdVendida * valor[pos];
 
-    quantidade[pos] = quantidade[pos] - qtd_vendida;
+    quantidade[pos] = quantidade[pos] - qtdVendida;
 
-    strcpy(venda_produto[num_vendas], produto[pos]);
-    venda_qtd[num_vendas] = qtd_vendida;
-    venda_total[num_vendas] = total;
-    num_vendas++;
+    strcpy(vendaProduto[numVendas], produto[pos]);
+    vendaQtd[numVendas] = qtdVendida;
+    vendaTotal[numVendas] = total;
+    numVendas++;
 
     printf("\n--- VENDA REALIZADA COM SUCESSO ---\n");
     printf("Produto: %s\n", produto[pos]);
-    printf("Cliente: %s\n", cliente[num_vendas - 1]);
-    printf("Quantidade: %d\n", qtd_vendida);
+    printf("Cliente: %s\n", cliente[numVendas - 1]);
+    printf("Quantidade: %d\n", qtdVendida);
     printf("Total: R$ %.2f\n", total);
     printf("Estoque atualizado: %d un.\n", quantidade[pos]);
 
@@ -207,30 +195,28 @@ void venda() {
     system("pause");
 }
 
-void relatorio_saida() {
-    float total_geral = 0;
+void relatorioSaida() {
+    float totalGeral = 0;
 
     system("cls");
-    printf("\n*****************************************************************");
     printf("\n ******************** RELATORIO DE SAIDAS ***********************");
-    printf("\n*****************************************************************\n");
 
-    if (num_vendas == 0) {
+    if (numVendas == 0) {
         printf("\nNenhuma venda registrada no sistema.\n");
         system("pause");
         return;
     }
 
     printf("\n%-15s %-15s %8s %12s\n", "PRODUTO", "CLIENTE", "QTD", "TOTAL");
-    printf("-----------------------------------------------------------------\n");
+    printf("----------------------------------------\n");
 
-    for (int j = 0; j < num_vendas; j++) {
-        printf("%-15s %-15s %8d %12.2f\n", venda_produto[j], cliente[j], venda_qtd[j], venda_total[j]);
-        total_geral = total_geral + venda_total[j];
+    for (int j = 0; j < numVendas; j++) {
+        printf("%-15s %-15s %8d %12.2f\n", vendaProduto[j], cliente[j], vendaQtd[j], vendaTotal[j]);
+        totalGeral = totalGeral + vendaTotal[j];
     }
 
     printf("-----------------------------------------------------------------\n");
-    printf("TOTAL GERAL DE VENDAS: R$ %.2f\n", total_geral);
+    printf("TOTAL GERAL DE VENDAS: R$ %.2f\n", totalGeral);
 
     system("pause");
 }
@@ -252,11 +238,8 @@ int main() {
         printf("\n [ 0 ] - SAIR DO SISTEMA");
         printf("\n**************************************\n");
         printf("Escolha a opcao: ");
-
-        if (scanf("%d", &op) != 1) {
-            op = -1;
-        }
-        limpar_buffer();
+        scanf("%i", &op);
+        setbuf(stdin, NULL);
 
         switch (op) {
             case 1:
@@ -266,13 +249,13 @@ int main() {
                 consulta();
                 break;
             case 3:
-                relatorio_produtos();
+                relatorioProdutos();
                 break;
             case 4:
                 venda();
                 break;
             case 5:
-                relatorio_saida();
+                relatorioSaida();
                 break;
             case 0:
                 printf("\nSaindo do sistema...\n");
